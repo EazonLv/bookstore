@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yc.bookstore.mapper.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.yc.bookstore.entity.Order" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_sourceid" property="userSourceid" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="shoppingid" property="shoppingid" jdbcType="VARCHAR" />
+    <result column="is_pay" property="isPay" jdbcType="VARCHAR" />
+    <result column="payment" property="payment" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_sourceid, createtime, shoppingid, is_pay, payment
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yc.bookstore.entity.OrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yc.bookstore.entity.OrderExample" >
+    delete from order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yc.bookstore.entity.Order" >
+    insert into order (id, user_sourceid, createtime, 
+      shoppingid, is_pay, payment
+      )
+    values (#{id,jdbcType=INTEGER}, #{userSourceid,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{shoppingid,jdbcType=VARCHAR}, #{isPay,jdbcType=VARCHAR}, #{payment,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yc.bookstore.entity.Order" >
+    insert into order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userSourceid != null" >
+        user_sourceid,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="shoppingid != null" >
+        shoppingid,
+      </if>
+      <if test="isPay != null" >
+        is_pay,
+      </if>
+      <if test="payment != null" >
+        payment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userSourceid != null" >
+        #{userSourceid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shoppingid != null" >
+        #{shoppingid,jdbcType=VARCHAR},
+      </if>
+      <if test="isPay != null" >
+        #{isPay,jdbcType=VARCHAR},
+      </if>
+      <if test="payment != null" >
+        #{payment,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yc.bookstore.entity.OrderExample" resultType="java.lang.Integer" >
+    select count(*) from order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userSourceid != null" >
+        user_sourceid = #{record.userSourceid,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.shoppingid != null" >
+        shoppingid = #{record.shoppingid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isPay != null" >
+        is_pay = #{record.isPay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payment != null" >
+        payment = #{record.payment,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update order
+    set id = #{record.id,jdbcType=INTEGER},
+      user_sourceid = #{record.userSourceid,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      shoppingid = #{record.shoppingid,jdbcType=VARCHAR},
+      is_pay = #{record.isPay,jdbcType=VARCHAR},
+      payment = #{record.payment,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yc.bookstore.entity.Order" >
+    update order
+    <set >
+      <if test="userSourceid != null" >
+        user_sourceid = #{userSourceid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shoppingid != null" >
+        shoppingid = #{shoppingid,jdbcType=VARCHAR},
+      </if>
+      <if test="isPay != null" >
+        is_pay = #{isPay,jdbcType=VARCHAR},
+      </if>
+      <if test="payment != null" >
+        payment = #{payment,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yc.bookstore.entity.Order" >
+    update order
+    set user_sourceid = #{userSourceid,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      shoppingid = #{shoppingid,jdbcType=VARCHAR},
+      is_pay = #{isPay,jdbcType=VARCHAR},
+      payment = #{payment,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
